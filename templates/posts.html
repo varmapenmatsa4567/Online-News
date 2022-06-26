@@ -1,0 +1,203 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>User</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+      #Sports {
+          background-color: rgb(69, 11, 242)
+      }
+      #Education {
+          background-color: rgb(36, 233, 29)
+      }
+      #Entertainment {
+          background-color: rgb(238, 31, 111)
+      }
+      #Technology {
+          background-color: rgb(231, 142, 24)
+      }
+      #Politics {
+          background-color: rgb(145, 25, 214)
+      }
+      #Others {
+          background-color: rgb(27, 120, 220)
+      }
+      .con {
+          border-radius: 5px;
+          display: flex;
+          flex-direction: column;
+      }
+      body {
+        background-image: "https://www.teahub.io/photos/full/279-2792224_website-background-design-hd.jpg";
+        background-size: cover;
+        background-attachment: fixed;
+      }
+      .col-8:hover {
+        background-color: lightyellow;
+      }
+      h3 {
+          color: white;
+      }
+      .user {
+        opacity: .6;
+      }
+      strong {
+        color: white;
+      }
+      h6 {
+        color: black;
+      }
+      
+      .con:hover {
+        cursor: pointer;
+      }
+      .modal {
+        width: 100%;
+      }
+      select {
+        width: 30%;
+      }
+      .city {
+        margin-left: 10px;
+      }
+        </style>
+    </head>
+    <body background="https://www.teahub.io/photos/full/279-2792224_website-background-design-hd.jpg">
+      <script>
+        function update() {
+          var inp = document.getElementById("category");
+          var filter = inp.value.toUpperCase();
+          var city = document.getElementById("city");
+          var cityFiler = city.value.toUpperCase();
+          var div = document.getElementsByClassName("con");
+          for (var i = 0; i < div.length; i++) {
+            var a = div[i].getElementsByClassName("cat")[0];
+            var b = div[i].getElementsByClassName("city")[0];
+            if (a.innerHTML.toUpperCase().indexOf(filter) > -1 || filter == "ALL") {
+              if (b.innerHTML.toUpperCase().indexOf(cityFiler) > -1 || cityFiler == "ALL") {
+                div[i].style.display = "";
+              } else {
+                div[i].style.display = "none";
+              }
+            } else {
+              div[i].style.display = "none";
+            }
+          }
+
+        }
+      </script>
+      <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+      
+        <!-- Toggler/collapsibe Button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+          <ul class="navbar-nav nav-pills">
+            <li class="nav-item">
+              <a class="nav-link" href="/view">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/user">Add Post</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/userPosts">My Posts</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <div class="container new pb-5 pt-5">
+        
+        <!-- <input class="form-control" id="myInput" type="text" placeholder="Search.."><br> -->
+        <span class="form-group">
+          <label for="sel1">Category:</label>
+          <select id="category" name="category" onchange="update()">
+            <option value="All">All</option>
+            <option value="Education">Education</option>
+            <option value="Politics">Politics</option>
+            <option value="Sports">Sports</option>
+            <option value="Technology">Technology</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Other">Other</option>
+        </select>
+      </span>
+        <span class="form-group city">
+          <label for="city">City</label>
+          <select id="city" name="city" onchange="update()">
+            <option value="All">All</option>
+            <option value="1">City1</option>
+            <option value="2">City2</option>
+            <option value="3">City3</option>
+          </select>
+        </span>
+        {% for post in posts %}
+        <div class="container con" data-toggle="modal" data-target="#id{{post.id}}">
+          <div class="card mb-3 shadow">
+            <div class="row no-gutters">
+              <div class="col-4" id="{{post.category}}" style="padding: 25px">
+                <h5 class="cat"><strong>{{post.category}}</strong></h5>
+                <h6 class="user"><strong>{{post.user}}</strong></h4>
+              </div>
+              <div class="col-8">
+                <div class="card-body">
+                  <h5 class="card-text">{{post.title}}</h5>
+                  <h6 class="city">{{post.city}}</h6>
+                  <div class="row">
+                  <div class="col-9" style="align: bottom">
+                    <p class="card-text"><small class="text-muted">{{post.date}}</small></p>
+                  </div>
+                  <div class="col-3">
+                    <a class="btn btn-primary" href="/delete/{{post.id}}"> Delete </a>
+                  </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="id{{post.id}}">
+          <div class="modal-dialog">
+            <div class="modal-content">
+            
+              <!-- Modal Header -->
+              <div class="modal-header">
+                <h4 class="modal-title">{{post.title}}</h4>
+                <button type="button" class="close" data-dismiss="modal">×</button>
+              </div>
+              
+              <!-- Modal body -->
+              <div class="modal-body">
+               {{post.content}}
+              </div>
+              
+              <!-- Modal footer -->
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        </div>
+        <script>
+          $(document).ready(function(){
+            $("#myInput").on("keyup", function() {
+              var value = $(this).val().toLowerCase();
+              $(".new .con").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+              });
+            });
+          });
+          </script>
+    </body>
+</html>

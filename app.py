@@ -3,10 +3,14 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, log
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+import pytz
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 app.config['SECRET_KEY'] = "lfjlkdf asfkjs fljasdf asdkfj sadlkf"
+
+ist = pytz.timezone("Asia/Kolkata")
+
 
 db = SQLAlchemy(app)
 
@@ -90,7 +94,7 @@ def addPost():
         content = request.form.get("content")
         category = request.form.get("category")
         city = request.form.get("city")
-        post = Post(user=current_user.name, email=current_user.email, title=title, content=content, category=category, city=city, date=datetime.now())
+        post = Post(user=current_user.name, email=current_user.email, title=title, content=content, category=category, city=city, date=datetime.now(ist))
         db.session.add(post)
         db.session.commit()
         flash("Post Successful","info")
@@ -134,4 +138,4 @@ def userPosts():
 
 if __name__ == "__main__":
 	db.create_all()
-	app.run(debug=True)
+	app.run()

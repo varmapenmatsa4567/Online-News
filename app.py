@@ -49,7 +49,6 @@ class App():
         post = Post(user=current_user.name, email=current_user.email, title=title, content=content, category=category, city=city, date=datetime.now())
         db.session.add(post)
         db.session.commit()
-        self.js.alert("Post Successful")
         self.js.document.getElementById("form").reset()
         post = Post.query.filter_by(user=current_user.name).first()
         print(post)
